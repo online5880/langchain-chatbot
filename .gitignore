@@ -1,0 +1,6 @@
+chatbot/key.py
+*.pyc
+chatbot/__pycache__/
+career/__pycache__/
+*.pyc
+__pycache__/

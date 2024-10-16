@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>진로 상담 챗봇</title>
+    <link rel="stylesheet" href="{% static 'chatbot/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="chatbot-title">진로 상담 챗봇</h1>
+        </header>
+
+        <main class="chat-container">
+            <div class="chat-log" id="chat-log">
+                {% for chat in chat_log %}
+                    <div class="chat-bubble {{ chat.role }}-bubble">
+                        <p>{{ chat.message|safe|linebreaks  }}</p>
+                    </div>
+                {% endfor %}
+                <div id="scroll-anchor"></div>
+            </div>
+        </main>
+
+        <footer class="input-container">
+            <form class="chat-form" method="POST" action="">
+                {% csrf_token %}  <!-- CSRF 토큰을 추가 -->
+                {% if random_question %}
+                    <input type="hidden" name="question_id" value="{{ random_question.id }}">
+                {% endif %}
+                <input type="text" name="answer" id="answer" placeholder="답변을 입력하세요" required minlength="2">
+                <button type="submit">전송</button>
+            </form>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollAnchor = document.getElementById('scroll-anchor');
+            if (scrollAnchor) {
+                scrollAnchor.scrollIntoView({ behavior: "smooth" });
+            }
+            document.getElementById('answer').focus();
+        });
+
+        document.querySelector('.chat-form').addEventListener('submit', function() {
+            setTimeout(function() {
+                document.getElementById('answer').focus();
+            }, 10);
+        });
+
+        
+    </script>
+</body>
+</html>
